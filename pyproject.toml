@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tibet-iot"
-version = "0.1.0"
-description = "IoT transport layer for TIBET — UDP transport, LAN discovery, and mesh relay over tibet-ping protocol."
+version = "0.1.1"
+description = "DEPRECATED: merged into tibet-ping>=0.2.0. Install tibet-ping instead."
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10"
@@ -32,7 +32,7 @@ classifiers = [
     "Framework :: AsyncIO",
 ]
 dependencies = [
-    "tibet-ping>=0.1.3",
+    "tibet-ping>=0.2.0",
 ]
 
 [project.optional-dependencies]

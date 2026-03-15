@@ -1,71 +1,65 @@
-"""tibet-iot: IoT Transport Layer for TIBET.
+"""tibet-iot: DEPRECATED — merged into tibet-ping v0.2.0.
 
-tibet-ping is the proto layer (packets, trust, airlock).
-tibet-iot is the transport layer: UDP transport, LAN discovery, mesh relay.
+All transport functionality is now part of tibet-ping:
 
-First async package in the TIBET ecosystem.
-
-Usage::
-
-    import asyncio
+    # Old (tibet-iot)
     from tibet_iot import IoTNode, TransportConfig
 
-    async def main():
-        node = IoTNode("jis:home:hub")
-        node.set_trust("jis:home:sensor", 0.9)
-        await node.start()
+    # New (tibet-ping >= 0.2.0)
+    from tibet_ping.transport import IoTNode, TransportConfig
 
-        response = await node.send_ping(
-            target="jis:home:sensor",
-            addr=("192.168.1.42", 7150),
-            intent="temperature.read",
-            purpose="Check room temperature",
-        )
-
-        if response:
-            print(response.decision)  # PingDecision.ACCEPT
-
-        await node.stop()
-
-    asyncio.run(main())
+This package re-exports everything from tibet_ping.transport for
+backward compatibility. Switch to tibet-ping and remove tibet-iot
+from your dependencies.
 """
 
-from .codec import PacketCodec, FrameFlags, MAGIC, VERSION, HEADER_SIZE
-from .peers import PeerTracker, PeerRecord
-from .relay import MeshRelay
-from .transport import (
+import warnings
+
+warnings.warn(
+    "tibet-iot is deprecated. Use 'from tibet_ping.transport import ...' instead. "
+    "See: https://pypi.org/project/tibet-ping/",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+# Re-export everything from tibet-ping's transport subpackage
+from tibet_ping.transport import (
+    IoTNode,
     Transport,
     UDPTransport,
     TransportConfig,
     DEFAULT_PORT,
     DISCOVERY_PORT,
+    PacketCodec,
+    FrameFlags,
+    MAGIC,
+    VERSION,
+    HEADER_SIZE,
+    PeerTracker,
+    PeerRecord,
+    MeshRelay,
+    NetworkDiscovery,
+    MULTICAST_GROUP,
+    MULTICAST_TTL,
 )
-from .discovery import NetworkDiscovery, MULTICAST_GROUP, MULTICAST_TTL
-from .node import IoTNode
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
-    # Node (main entry point)
     "IoTNode",
-    # Transport
     "Transport",
     "UDPTransport",
     "TransportConfig",
     "DEFAULT_PORT",
     "DISCOVERY_PORT",
-    # Codec
     "PacketCodec",
     "FrameFlags",
     "MAGIC",
     "VERSION",
     "HEADER_SIZE",
-    # Peers
     "PeerTracker",
     "PeerRecord",
-    # Relay
     "MeshRelay",
-    # Discovery
     "NetworkDiscovery",
     "MULTICAST_GROUP",
     "MULTICAST_TTL",
